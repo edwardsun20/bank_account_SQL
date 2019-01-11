@@ -1,0 +1,188 @@
+Last login: Thu Jan 10 09:41:03 on ttys001
+Edwards-MacBook-Pro-4:~ edwardsun$ psql -U postgres
+psql (11.0)
+Type "help" for help.
+
+postgres=# \l
+                                       List of databases
+        Name         |   Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   
+---------------------+-----------+----------+-------------+-------------+-----------------------
+ consumer_complaints | oracle    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ edwardsun           | edwardsun | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres            | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0           | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                     |           |          |             |             | postgres=CTc/postgres
+ template1           | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                     |           |          |             |             | postgres=CTc/postgres
+(5 rows)
+
+postgres=# \l
+                                       List of databases
+        Name         |   Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   
+---------------------+-----------+----------+-------------+-------------+-----------------------
+ consumer_complaints | oracle    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ edwardsun           | edwardsun | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres            | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0           | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                     |           |          |             |             | postgres=CTc/postgres
+ template1           | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                     |           |          |             |             | postgres=CTc/postgres
+(5 rows)
+
+postgres=# CREATE TABLE bank_account_complaints (
+postgres(#  complaint_id text PRIMARY KEY,
+postgres(#  date_received date,
+postgres(#  product text,
+postgres(#  sub_product text,
+postgres(#  issue text,
+postgres(#  sub_issue text,
+postgres(#  consumer_complaint_narrative text,
+postgres(#  company_public_response text,
+postgres(#  company text,
+postgres(#  state text,
+postgres(#  zip_code text,
+postgres(#  tags text,
+postgres(#  consumer_consent_provided text,
+postgres(#  submitted_via text,
+postgres(#  date_sent date,
+postgres(#  company_response_to_consumer text,
+postgres(#  timely_response text,
+postgres(#  consumer_disputed text);
+CREATE TABLE
+postgres=# CREATE TABLE credit_card_complaints (
+postgres(#  complaint_id text PRIMARY KEY,
+postgres(#  date_received date,
+postgres(#  product text,
+postgres(#  sub_product text,
+postgres(#  issue text,
+postgres(#  sub_issue text,
+postgres(#  consumer_complaint_narrative text,
+postgres(#  company_public_response text,
+postgres(#  company text,
+postgres(#  state text,
+postgres(#  zip_code text,
+postgres(#  tags text,
+postgres(#  consumer_consent_provided text,
+postgres(#  submitted_via text,
+postgres(#  date_sent date,
+postgres(#  company_response_to_consumer text,
+postgres(#  timely_response text,
+postgres(#  consumer_disputed text);
+CREATE TABLE
+postgres=# consumer_complaints=# \COPY credit_card_complaints (date_received, product, sub_product, issue, sub_issue, consumer_complaint_narrative, company_public_response, company, state, zip_code, tags, consumer_consent_provided, submitted_via, date_sent, company_response_to_consumer, timely_response, consumer_disputed, complaint_id) FROM './Credit_Card_Complaints.csv' WITH CSV HEADER
+./Credit_Card_Complaints.csv: No such file or directory
+postgres-# FROM '/Users/edwardsun/Documents/Berkeley/SQL_side_project/Credit_Card_Complaints.csv' WITH CSV HEADER
+postgres-# consumer_complaints=# \COPY credit_card_complaints (date_received, product, sub_product, issue, sub_issue, consumer_complaint_narrative, company_public_response, company, state, zip_code, tags, consumer_consent_provided, submitted_via, date_sent, company_response_to_consumer, timely_response, consumer_disputed, complaint_id)
+\copy: parse error at end of line
+postgres-#     FROM './Credit_Card_Complaints.csv'
+postgres-#     WITH CSV HEADER
+postgres-# consumer_complaints=# \COPY credit_card_complaints (date_received, product, sub_product, issue, sub_issue, consumer_complaint_narrative, company_public_response, company, state, zip_code, tags, consumer_consent_provided, submitted_via, date_sent, company_response_to_consumer, timely_response, consumer_disputed, complaint_id) FROM '/Users/edwardsun/Documents/Berkeley/SQL_side_project/Credit_Card_Complaints.csv' WITH CSV HEADER
+COPY 87718
+postgres-# consumer_complaints=# \COPY bank_account_complaints (date_received, product, sub_product, issue, sub_issue, consumer_complaint_narrative, company_public_response, company, state, zip_code, tags, consumer_consent_provided, submitted_via, date_sent, company_response_to_consumer, timely_response, consumer_disputed, complaint_id) FROM '/Users/edwardsun/Documents/Berkeley/SQL_side_project/Bank_Account_or_Service_Complaints.csv' WITH CSV HEADER
+COPY 84811
+postgres-# pip install pandas sqlalchemy pscopg2
+postgres-# import pandas as pd
+postgres-# import psycopg2
+postgres-# conn = psycopg2.connect("dbname=consumer_complaints user=oracle")
+postgres-# conn.autocommit = True
+postgres-# cur = conn.cursor()
+postgres-# def run_command(command):cur.execute(command) return cur.statusmessage
+postgres-# from sqlalchemy import create_engine
+postgres-# engine = create_engine('postgresql://oracle@localhost/consumer_complaints')
+postgres-# def run_query(query): return pd.read_sql_query(query,con=engine)
+postgres-# query = 'SELECT count(*) FROM credit_card_complaints;'
+postgres-# run_query(query)
+postgres-# \dt
+                  List of relations
+ Schema |          Name           | Type  |  Owner   
+--------+-------------------------+-------+----------
+ public | bank_account_complaints | table | postgres
+ public | credit_card_complaints  | table | postgres
+(2 rows)
+
+postgres-# query = 'SELECT count(*) FROM credit_card_complaints;'
+postgres-# run_query(query)
+postgres-# pip install psycopg2-binary
+postgres-# \connect bank_account_complaints
+FATAL:  database "bank_account_complaints" does not exist
+Previous connection kept
+postgres-# \list
+                                       List of databases
+        Name         |   Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   
+---------------------+-----------+----------+-------------+-------------+-----------------------
+ consumer_complaints | oracle    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ edwardsun           | edwardsun | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres            | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0           | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                     |           |          |             |             | postgres=CTc/postgres
+ template1           | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                     |           |          |             |             | postgres=CTc/postgres
+(5 rows)
+
+postgres-# \connect consumer_complaints
+You are now connected to database "consumer_complaints" as user "postgres".
+consumer_complaints-# \dt
+Did not find any relations.
+consumer_complaints-# \connect postgres
+You are now connected to database "postgres" as user "postgres".
+postgres-# \dt
+                  List of relations
+ Schema |          Name           | Type  |  Owner   
+--------+-------------------------+-------+----------
+ public | bank_account_complaints | table | postgres
+ public | credit_card_complaints  | table | postgres
+(2 rows)
+
+postgres-# \dt
+                  List of relations
+ Schema |          Name           | Type  |  Owner   
+--------+-------------------------+-------+----------
+ public | bank_account_complaints | table | postgres
+ public | credit_card_complaints  | table | postgres
+(2 rows)
+
+postgres-# \dt
+                  List of relations
+ Schema |          Name           | Type  |  Owner   
+--------+-------------------------+-------+----------
+ public | bank_account_complaints | table | postgres
+ public | credit_card_complaints  | table | postgres
+(2 rows)
+
+postgres-# psql -h localhost -p 5432 postgres
+postgres-# \list
+                                       List of databases
+        Name         |   Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   
+---------------------+-----------+----------+-------------+-------------+-----------------------
+ consumer_complaints | oracle    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ edwardsun           | edwardsun | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres            | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0           | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                     |           |          |             |             | postgres=CTc/postgres
+ template1           | postgres  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                     |           |          |             |             | postgres=CTc/postgres
+(5 rows)
+
+postgres-# \connect consumer_complaints
+You are now connected to database "consumer_complaints" as user "postgres".
+consumer_complaints-# \dt
+Did not find any relations.
+consumer_complaints-# \dn+
+                          List of schemas
+  Name  |  Owner   |  Access privileges   |      Description       
+--------+----------+----------------------+------------------------
+ public | postgres | postgres=UC/postgres+| standard public schema
+        |          | =UC/postgres         | 
+(1 row)
+
+consumer_complaints-# \connect postgres
+You are now connected to database "postgres" as user "postgres".
+postgres-# \dt
+                  List of relations
+ Schema |          Name           | Type  |  Owner   
+--------+-------------------------+-------+----------
+ public | bank_account_complaints | table | postgres
+ public | credit_card_complaints  | table | postgres
+(2 rows)
+
+postgres-# 
